@@ -1,11 +1,128 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Diyaap</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interactive Pineapple Character</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #4a5d23;
+    }
+    
+    #pineapple-container {
+      width: 300px;
+      height: 400px;
+      position: relative;
+    }
+    
+    .eyelid {
+      animation: blink 3s infinite;
+      transform-origin: center center;
+      opacity: 0;
+    }
+    
+    @keyframes blink {
+      0%, 96%, 100% { opacity: 0; }
+      97%, 99% { opacity: 1; }
+    }
+  </style>
 </head>
 <body>
-    <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank">Klik saia utk mem</a>
+  <div id="pineapple-container">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 500" width="100%" height="100%">
+      <!-- Background gradient -->
+      <defs>
+        <radialGradient id="backgroundGradient" cx="50%" cy="50%" r="70%" fx="50%" fy="50%">
+          <stop offset="0%" stop-color="#4a5d23" stop-opacity="0.6" />
+          <stop offset="100%" stop-color="#2c3614" stop-opacity="0.9" />
+        </radialGradient>
+      </defs>
+      
+      <!-- Leaf backdrop -->
+      <g id="leaves">
+        <path d="M200 100 Q130 160 150 250" fill="#7ac142" opacity="0.9" />
+        <path d="M200 100 Q270 160 250 250" fill="#7ac142" opacity="0.9" />
+        <path d="M200 100 Q200 150 200 250" fill="#7ac142" opacity="0.9" />
+      </g>
+      
+      <!-- Pineapple body -->
+      <ellipse id="body" cx="200" cy="300" rx="100" ry="120" fill="#ffd966" />
+      
+      <!-- Pineapple texture (X patterns) -->
+      <g id="texture" fill="none" stroke="#e6c35c" stroke-width="3">
+        <path d="M150 250 L170 270 M170 250 L150 270" />
+        <path d="M230 250 L250 270 M250 250 L230 270" />
+        <path d="M190 330 L210 350 M210 330 L190 350" />
+        <path d="M150 350 L170 370 M170 350 L150 370" />
+        <path d="M230 350 L250 370 M250 350 L230 370" />
+      </g>
+      
+      <!-- Eyes -->
+      <g id="eyes">
+        <g id="left-eye">
+          <circle cx="160" cy="270" r="20" fill="white" />
+          <circle id="left-pupil" cx="160" cy="270" r="10" fill="black" />
+          <circle cx="165" cy="265" r="3" fill="white" />
+          
+          <!-- Left eyelid for blinking -->
+          <ellipse class="eyelid" cx="160" cy="270" rx="20" ry="10" fill="#ffd966" />
+        </g>
+        
+        <g id="right-eye">
+          <circle cx="240" cy="270" r="20" fill="white" />
+          <circle id="right-pupil" cx="240" cy="270" r="10" fill="black" />
+          <circle cx="245" cy="265" r="3" fill="white" />
+          
+          <!-- Right eyelid for blinking -->
+          <ellipse class="eyelid" cx="240" cy="270" rx="20" ry="10" fill="#ffd966" />
+        </g>
+      </g>
+      
+      <!-- Blush -->
+      <ellipse cx="135" cy="290" rx="15" ry="10" fill="#ffb3cb" opacity="0.7" />
+      <ellipse cx="265" cy="290" rx="15" ry="10" fill="#ffb3cb" opacity="0.7" />
+      
+      <!-- Mouth -->
+      <path d="M185 310 Q200 325 215 310" fill="none" stroke="black" stroke-width="3" stroke-linecap="round" />
+    </svg>
+  </div>
+
+  <script>
+    // Get eye elements
+    const leftPupil = document.getElementById('left-pupil');
+    const rightPupil = document.getElementById('right-pupil');
+    const container = document.getElementById('pineapple-container');
+    
+    // Eye movement function
+    document.addEventListener('mousemove', (e) => {
+      const containerRect = container.getBoundingClientRect();
+      const containerCenterX = containerRect.left + containerRect.width / 2;
+      const containerCenterY = containerRect.top + containerRect.height / 2;
+      
+      const mouseX = e.clientX;
+      const mouseY = e.clientY;
+      
+      // Calculate direction from center of container to mouse
+      const directionX = mouseX - containerCenterX;
+      const directionY = mouseY - containerCenterY;
+      
+      // Limit the eye movement to a small area
+      const maxMovement = 5;
+      const movementX = Math.min(Math.max(directionX / 20, -maxMovement), maxMovement);
+      const movementY = Math.min(Math.max(directionY / 20, -maxMovement), maxMovement);
+      
+      // Apply movement to pupils
+      leftPupil.setAttribute('cx', 160 + movementX);
+      leftPupil.setAttribute('cy', 270 + movementY);
+      
+      rightPupil.setAttribute('cx', 240 + movementX);
+      rightPupil.setAttribute('cy', 270 + movementY);
+    });
+  </script>
 </body>
 </html>
